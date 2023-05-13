@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cart Page</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your Cart</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Product 1</td>
+            <td><input type="number" value="1"></td>
+            <td>$19.99</td>
+          </tr>
+          <tr>
+            <td>Product 2</td>
+            <td><input type="number" value="2"></td>
+            <td>$24.99</td>
+          </tr>
+          <tr>
+            <td>Product 3</td>
+            <td><input type="number" value="3"></td>
+            <td>$29.99</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Total Price:</td>
+            <td>${{total}}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <button type="button">Buy Now</button>
+    </div>
+  </body>
+</html>
+  
