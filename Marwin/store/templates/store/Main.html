@@ -1,0 +1,21 @@
+
+<h3>Main</h3>
+{% if messages%}
+        <div class="notification">
+            {%for message in messages%}
+            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</p>
+            {% endfor %}
+        </div>
+
+    <script>
+        var cross = document.getElementById('cross')
+        cross.addEventListener('click', ()=> {
+            document.getElementsByClassName('notification-container')[0].style.display = 'none';
+        })
+    </script>
+  {%endif%}
+<div class = "container">
+    {% block content%}
+
+    {% endblock content%}
+</div>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% extends 'store/Main.html' %}
+{% block content%}
+<html>
+<head>
+	<title>Sign Up Page</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 50px;
+		}
+		input[type="text"], input[type="password"], input[type="email"] {
+			padding: 10px;
+			margin: 10px;
+			width: 250px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0,0,0,0.3);
+			font-size: 16px;
+			outline: none;
+		}
+		input[type="submit"] {
+			padding: 10px;
+			margin: 10px;
+			width: 100px;
+			background-color: #4CAF50;
+			color: white;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0,0,0,0.3);
+			font-size: 16px;
+			cursor: pointer;
+		}
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+	<body>
+		<form action="" method="POST">
+			{% csrf_token %}
+			<h1>Sign Up</h1>
+			{{form.username}}
+			{{form.email}}
+			{{form.password1}}
+			{{form.password2}}
+			<input type="submit" value="Sign Up">
+		</form>
+	</body>
+<script>
+  var id_username = document.getElementById('id_username')
+  var id_email = document.getElementById('id_email')
+  var id_password1 = document.getElementById('id_password1')
+  var id_password2 = document.getElementById('id_password2')
+
+  id_username.placeholder = 'Username';
+  id_email.placeholder = 'Email';
+  id_password1.placeholder = 'Password';
+  id_password2.placeholder = 'Confirm password';
+
+</script>
+</html>
+{% endblock content%}
