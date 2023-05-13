@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from .forms import CreateUserForm
 
 
 # Create your views here.
@@ -26,5 +27,17 @@ def login_user(request):
 
 
 def register_user(request):
-    context = {}
-    return render(request, 'store/sign.html')
+    form = CreateUserForm()
+
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Account is create.')
+            return redirect('login')
+        else:
+            context = {'form': form}
+            messages.info(request, 'Invalid Invalid')
+            return render(request, 'store/register_page.html', context)
+    context = {'form': form}
+    return render(request, 'store/sign.html',context)
