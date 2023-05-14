@@ -52,7 +52,7 @@
             <div class="under-nav-right">
                 <img class="sign-in" src="{% static 'images/shopping-cart (1).png'%}" alt="">
                 {%if user.is_authenticated%}
-                <a href="">
+                <a href="{% url 'profile'%}">
                     Welcome, {{ user.username }}
                 </a>
                  {%else%}

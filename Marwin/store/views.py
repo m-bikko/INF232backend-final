@@ -1,7 +1,7 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CreateUserForm
+from .forms import CreateUserForm, ProfileForm
 from .models import *
 
 
@@ -54,3 +54,23 @@ def searchBar(request):
         else:
             print("No information show")
             return render(request, 'store/searchBar.html', {})
+
+
+def profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            username = request.user.username
+            messages.success(request, f'{username},Your profile is update.')
+            return redirect('/')
+    else:
+        form = ProfileForm(instance=request.user.profile)
+    contex = {'form': form}
+    return render(request, 'store/profile.html',contex)
+
+
+def logout_user(request):
+    logout(request)
+    messages.info(request, 'You  logged out successfully')
+    return render(request, 'store/log.html')
