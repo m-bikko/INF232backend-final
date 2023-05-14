@@ -1,7 +1,7 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CreateUserForm, ProfileForm
+from .forms import CreateUserForm
 from .models import *
 
 
@@ -10,6 +10,37 @@ def store(request):
     products = Product.objects.all()
     context = {'products': products}
     return render(request, 'store/store.html', context)
+
+
+def checkout(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+    context = {'items': items, 'order': order}
+    return render(request, 'store/checkout.html', context)
+
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        product = Product.objects.get(pk=request.POST['pi'])
+        order = Order.objects.get(customer=request.user.customer, complete=False)
+        OrderItem.objects.create(product=product, order=order)
+        return redirect('cart')
+
+def cart(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+    context = {'items': items, 'order': order}
+    return render(request, 'store/cart.html', context)
 
 
 def login_user(request):
@@ -34,7 +65,9 @@ def register_user(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = User.objects.create(**form.cleaned_data)
+            customer = Customer.objects.create(user=user, name=user.username, email=user.email)
+            Order.objects.create(customer=customer)
             messages.info(request, 'Account is create.')
             return redirect('login')
         else:
@@ -55,22 +88,3 @@ def searchBar(request):
             print("No information show")
             return render(request, 'store/searchBar.html', {})
 
-
-def profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            username = request.user.username
-            messages.success(request, f'{username},Your profile is update.')
-            return redirect('/')
-    else:
-        form = ProfileForm(instance=request.user.profile)
-    contex = {'form': form}
-    return render(request, 'store/profile.html',contex)
-
-
-def logout_user(request):
-    logout(request)
-    messages.info(request, 'You  logged out successfully')
-    return render(request, 'store/log.html')
