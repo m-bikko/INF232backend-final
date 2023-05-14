@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <title>Marwin</title>
 </head>
 <body>
@@ -41,19 +41,45 @@
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <img class="sz" src="{% static 'images/Burger.png' %}" alt="">
                 </a>
-
+                <a href = "{% url 'store'%}">
                 <img class="logo" src="{% static 'images/mar_main.png' %}" alt="">
-                <form action="#">
-                    <input type="text" class="text" name="email" placeholder="Search item name" />
+                </a>
+                <form action="{% url 'search'%}" method="get">
+
+                    <input name = "query"class="text" type="query" placeholder="Search item name" aria-label="Search">
                 </form>
             </div>
             <div class="under-nav-right">
                 <img class="sign-in" src="{% static 'images/shopping-cart (1).png'%}" alt="">
+                {%if user.is_authenticated%}
                 <a href="">
+                    Welcome, {{ user.username }}
+                </a>
+                 {%else%}
+                <a href="{% url 'login' %}">
                     <img class="sign-in" src="{% static 'images/icons8-login-50.png'%}" alt="">
                 </a>
-                <a href="">
-                    <img class="sign-in" src="https://cdn.dynamicyield.com/api/8771615/images/22aaaf8320ecc__lego.gif" alt="">
+                {%endif%}
+                <a href="{% url 'login'%}">
+                    <style>.login-button {
+  display: inline-block;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0062cc;
+}</style>
+                    <button class="login-button" >Login</button>
                 </a>
 
             </div>

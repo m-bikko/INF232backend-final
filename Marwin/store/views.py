@@ -9,7 +9,7 @@ from .models import *
 def store(request):
     products = Product.objects.all()
     context = {'products': products}
-    return render(request, 'store/store.html',context)
+    return render(request, 'store/store.html', context)
 
 
 def login_user(request):
@@ -42,4 +42,15 @@ def register_user(request):
             messages.info(request, 'Invalid Invalid')
             return render(request, 'store/register_page.html', context)
     context = {'form': form}
-    return render(request, 'store/sign.html',context)
+    return render(request, 'store/sign.html', context)
+
+
+def searchBar(request):
+    if request.method == 'GET':
+        query = request.GET.get('query')
+        if query:
+            products = Product.objects.filter(name__contains=query)
+            return render(request, 'store/searchBar.html', {'products': products})
+        else:
+            print("No information show")
+            return render(request, 'store/searchBar.html', {})
