@@ -15,7 +15,7 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=200, null=True)
     prices = models.FloatField(null=True, blank=True)
-    descript = models.CharField(max_length=200, null=True)
+    descript = models.CharField(max_length=1000, null=True)
     image = models.ImageField(null=True, blank=True)
 
 
@@ -30,8 +30,8 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.set_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.set_NULL, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_add = models.DateTimeField(auto_now_add=True)
 

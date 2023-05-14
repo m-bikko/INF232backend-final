@@ -1,21 +1,125 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<h3>Main</h3>
-{% if messages%}
-        <div class="notification">
-            {%for message in messages%}
-            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</p>
-            {% endfor %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Marwin</title>
+</head>
+<body>
+    <div class="full-pg">
+        <div class="nav">
+            <div>
+                Almaty
+            </div>
+            <div class="nav-mid">
+                <div>
+                    My orders
+                </div>
+                <div>
+                    FAQ
+                </div>
+                <div>
+                    Liked Products
+                </div>
+            </div>
+            <div class="telegram">
+                <a href="https://t.me/MarbikF">
+                    <object data="{% static 'images/telegram.svg'%}" width="25" height="25"> </object>
+                </a>
+            </div>
         </div>
+        <div class="under-nav">
+            <div class="under-nav-left">
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <img class="sz" src="{% static 'images/Burger.png' %}" alt="">
+                </a>
 
+                <img class="logo" src="{% static 'images/mar_main.png' %}" alt="">
+                <form action="#">
+                    <input type="text" class="text" name="email" placeholder="Search item name" />
+                </form>
+            </div>
+            <div class="under-nav-right">
+                <img class="sign-in" src="{% static 'images/shopping-cart (1).png'%}" alt="">
+                <a href="">
+                    <img class="sign-in" src="{% static 'images/icons8-login-50.png'%}" alt="">
+                </a>
+                <a href="">
+                    <img class="sign-in" src="https://cdn.dynamicyield.com/api/8771615/images/22aaaf8320ecc__lego.gif" alt="">
+                </a>
+
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="products">
+                <div id="burger" class="categories">
+                    <div class="cat-card">
+                        Example1
+                    </div>
+                    <div class="cat-card">
+                        Example2
+                    </div>
+                    <div class="cat-card">
+                        Example3
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="wrapper">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div class="footer-basic">
+            <footer>
+                <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="#">Home</a></li>
+                    <li class="list-inline-item"><a href="#">Services</a></li>
+                    <li class="list-inline-item"><a href="#">About</a></li>
+                    <li class="list-inline-item"><a href="#">Terms</a></li>
+                    <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+                </ul>
+                <p class="copyright">Marwin © 2018</p>
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
     <script>
-        var cross = document.getElementById('cross')
-        cross.addEventListener('click', ()=> {
-            document.getElementsByClassName('notification-container')[0].style.display = 'none';
-        })
+        function myFunction() {
+            var x = document.getElementById("burger");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
     </script>
-  {%endif%}
-<div class = "container">
-    {% block content%}
+</body>
 
-    {% endblock content%}
-</div>
+</html>

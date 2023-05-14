@@ -2,12 +2,14 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CreateUserForm
+from .models import *
 
 
 # Create your views here.
 def store(request):
-    context = {}
-    return render(request, 'store/Main.html')
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'store/store.html',context)
 
 
 def login_user(request):
