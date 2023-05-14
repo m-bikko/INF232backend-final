@@ -54,7 +54,7 @@
                 <img id="cart-icon" src="{%static 'images/icons8-cart-96.png'%}"/>
             </a>
             {%if user.is_authenticated%}
-            <a href="">
+            <a href="{% url 'profile'%}">
                 Welcome, {{ user.username }}
             </a>
             {%else%}
