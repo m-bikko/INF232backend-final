@@ -38,7 +38,7 @@ def del_quantity(request):
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order = Order.objects.filter(customer=customer, complete=False).first()
+        order, created = Order.objects.filter(customer=customer, complete=False).first()
         items = order.orderitem_set.all()
     else:
         items = []
@@ -94,9 +94,7 @@ def register_user(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            print(form)
-            user = form.save(commit=False)
-            user.save()
+            user = User.objects.create(**form.cleaned_data)
             login(request, user)
             customer = Customer.objects.create(user=user, name=user.username, email=user.email)
             Order.objects.create(customer=customer)
