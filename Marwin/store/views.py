@@ -7,7 +7,7 @@ from .models import *
 
 # Create your views here.
 def add_to_cart_view(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_authenticated:
         product = Product.objects.get(pk=request.POST['pi'])
         quantity = request.POST['quantity']
         order = Order.objects.get(customer=request.user.customer, complete=False)
@@ -65,7 +65,7 @@ def checkout(request):
 
 
 def add_to_cart(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_authenticated:
         product = Product.objects.get(pk=request.POST['pi'])
         order = Order.objects.get(customer=request.user.customer, complete=False)
         if OrderItem.objects.filter(product=product, order=order):
