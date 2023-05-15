@@ -12,10 +12,33 @@ def store(request):
     return render(request, 'store/store.html', context)
 
 
+def add_quantity(request):
+    if request.method == 'POST':
+        order_item = OrderItem.objects.get(pk=request.POST['oi'])
+        order_item.quantity += 1
+        order_item.save()
+        return redirect('cart')
+    else:
+        return redirect('store')
+
+
+def del_quantity(request):
+    if request.method == 'POST':
+        order_item = OrderItem.objects.get(pk=request.POST['oi'])
+        order_item.quantity -= 1
+        if order_item.quantity > 0:
+            order_item.save()
+        else:
+            order_item.delete()
+        return redirect('cart')
+    else:
+        return redirect('store')
+
+
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order, created = Order.objects.get(customer=customer, complete=False)
+        order, created = Order.objects.filter(customer=customer, complete=False).first()
         items = order.orderitem_set.all()
     else:
         items = []
@@ -28,8 +51,13 @@ def add_to_cart(request):
     if request.method == 'POST':
         product = Product.objects.get(pk=request.POST['pi'])
         order = Order.objects.get(customer=request.user.customer, complete=False)
-        OrderItem.objects.create(product=product, order=order)
-        messages.success(request, f'Your product add to cart')
+        if OrderItem.objects.filter(product=product, order=order):
+            messages.info(request, 'This product already added to cart')
+            return redirect('store')
+        else:
+            OrderItem.objects.create(product=product, order=order)
+            return redirect('cart')
+    else:
         return redirect('store')
 
 
@@ -68,10 +96,11 @@ def register_user(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             user = User.objects.create(**form.cleaned_data)
+            login(request, user)
             customer = Customer.objects.create(user=user, name=user.username, email=user.email)
             Order.objects.create(customer=customer)
             messages.info(request, 'Account is create.')
-            return redirect('login')
+            return redirect('store')
         else:
             context = {'form': form}
             messages.info(request, 'Invalid Invalid')
@@ -109,51 +138,3 @@ def logout_user(request):
     logout(request)
     messages.info(request, 'You  logged out successfully')
     return render(request, 'store/log.html')
-
-
-def productView(request,product_id):
-    product = Product.objects.get(pk=product_id)
-    recently_viewed_products = None
-
-    if 'recently_viewed' in request.session:
-        if product_id in request.session['recently_viewed']:
-            request.session['recently_viewed'].remove(product_id)
-
-        products = Product.objects.filter(pk__in=request.session['recently_viewed'])
-        recently_viewed_products = sorted(products,
-                                          key=lambda x: request.session['recently_viewed'].index(x.id)
-                                          )
-        request.session['recently_viewed'].insert(0, product_id)
-        if len(request.session['recently_viewed']) > 5:
-            request.session['recently_viewed'].pop()
-    else:
-        request.session['recently_viewed'] = [product_id]
-
-    request.session.modified = True
-
-    contex = {'product': product, 'recently_viewed_products': recently_viewed_products}
-    return render(request, 'store/prodView.html', contex)
-
-
-def productinf(request, product_id):
-    product = Product.objects.get(pk=product_id)
-    recently_viewed_products = None
-
-    if 'recently_viewed' in request.session:
-        if product_id in request.session['recently_viewed']:
-            request.session['recently_viewed'].remove(product_id)
-
-        products = Product.objects.filter(pk__in=request.session['recently_viewed'])
-        recently_viewed_products = sorted(products,
-                                          key=lambda x: request.session['recently_viewed'].index(x.id)
-                                          )
-        request.session['recently_viewed'].insert(0, product_id)
-        if len(request.session['recently_viewed']) > 5:
-            request.session['recently_viewed'].pop()
-    else:
-        request.session['recently_viewed'] = [product_id]
-
-    request.session.modified = True
-
-    contex = {'product': product, 'recently_viewed_products': recently_viewed_products}
-    return render(request, 'store/productinf.html', contex)

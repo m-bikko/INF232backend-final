@@ -1,6 +1,14 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li
+    {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <div class="row">
     {% for product in products %}
     <div class="col-lg-4" style="width:100px;">
