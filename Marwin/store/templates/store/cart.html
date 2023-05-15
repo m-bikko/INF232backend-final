@@ -37,6 +37,7 @@
                 <div style="flex:1">
                     <p class="quantity">{{item.quantity}}</p>
                     <div class="quantity">
+
                         <form action="{%url 'addQuantity'%}" method="post">
                             {%csrf_token%}
                             <button type="submit" name="oi" value="{{item.pk}}"><img class="chg-quantity"
