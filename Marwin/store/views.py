@@ -6,6 +6,23 @@ from .models import *
 
 
 # Create your views here.
+def add_to_cart_view(request):
+    if request.method == 'POST':
+        product = Product.objects.get(pk=request.POST['pi'])
+        quantity = request.POST['quantity']
+        order = Order.objects.get(customer=request.user.customer, complete=False)
+        if OrderItem.objects.filter(product=product, order=order):
+            order_item = OrderItem.objects.get(product=product, order=order)
+            order_item.quantity += int(quantity)
+            order_item.save()
+            return redirect('cart')
+        else:
+            OrderItem.objects.create(product=product, order=order, quantity=quantity)
+            return redirect('cart')
+    else:
+        return redirect('store')
+
+
 def store(request):
     products = Product.objects.all()
     context = {'products': products}
@@ -56,7 +73,8 @@ def add_to_cart(request):
             return redirect('store')
         else:
             OrderItem.objects.create(product=product, order=order)
-            return redirect('cart')
+            messages.success(request, 'Product was added successfully')
+            return redirect('store')
     else:
         return redirect('store')
 

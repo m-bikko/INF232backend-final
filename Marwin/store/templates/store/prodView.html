@@ -32,10 +32,11 @@
 						<h2 class="product-subtitle">Description</h2>
 						<p class="product-text">{{product.descript}}</p>
 					</div>
-					<form class="product-form">
+					<form class="product-form" action="{%url 'atcv'%}" method="post">
+						{%csrf_token%}
 						<label for="quantity" class="product-label">Quantity:</label>
 						<input type="number" id="quantity" name="quantity" min="1" value="1" class="product-quantity">
-						<button type="submit" class="product-button">Add to Cart</button>
+						<button type="submit" class="product-button" name="pi" value="{{product.pk}}">Add to Cart</button>
 					</form>
 					<br>
 					<br>
