@@ -13,7 +13,7 @@
                 <button class="btn btn-outline-secondary add-btn" type="submit" name="pi" value="{{product.pk}}">Add to
                     Cart
                 </button>
-                <a class="btn btn-outline-success" href="#">View</a>
+                <a class="btn btn-outline-success" href="{% url 'productView' product.id%}">View</a>
                 <h4 style="display: inline-block;float: right">${{product.prices|floatformat:2}}</h4>
             </form>
         </div>

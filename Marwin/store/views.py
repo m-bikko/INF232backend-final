@@ -29,7 +29,8 @@ def add_to_cart(request):
         product = Product.objects.get(pk=request.POST['pi'])
         order = Order.objects.get(customer=request.user.customer, complete=False)
         OrderItem.objects.create(product=product, order=order)
-        return redirect('cart')
+        messages.success(request, f'Your product add to cart')
+        return redirect('store')
 
 
 def cart(request):
@@ -108,3 +109,51 @@ def logout_user(request):
     logout(request)
     messages.info(request, 'You  logged out successfully')
     return render(request, 'store/log.html')
+
+
+def productView(request,product_id):
+    product = Product.objects.get(pk=product_id)
+    recently_viewed_products = None
+
+    if 'recently_viewed' in request.session:
+        if product_id in request.session['recently_viewed']:
+            request.session['recently_viewed'].remove(product_id)
+
+        products = Product.objects.filter(pk__in=request.session['recently_viewed'])
+        recently_viewed_products = sorted(products,
+                                          key=lambda x: request.session['recently_viewed'].index(x.id)
+                                          )
+        request.session['recently_viewed'].insert(0, product_id)
+        if len(request.session['recently_viewed']) > 5:
+            request.session['recently_viewed'].pop()
+    else:
+        request.session['recently_viewed'] = [product_id]
+
+    request.session.modified = True
+
+    contex = {'product': product, 'recently_viewed_products': recently_viewed_products}
+    return render(request, 'store/prodView.html', contex)
+
+
+def productinf(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    recently_viewed_products = None
+
+    if 'recently_viewed' in request.session:
+        if product_id in request.session['recently_viewed']:
+            request.session['recently_viewed'].remove(product_id)
+
+        products = Product.objects.filter(pk__in=request.session['recently_viewed'])
+        recently_viewed_products = sorted(products,
+                                          key=lambda x: request.session['recently_viewed'].index(x.id)
+                                          )
+        request.session['recently_viewed'].insert(0, product_id)
+        if len(request.session['recently_viewed']) > 5:
+            request.session['recently_viewed'].pop()
+    else:
+        request.session['recently_viewed'] = [product_id]
+
+    request.session.modified = True
+
+    contex = {'product': product, 'recently_viewed_products': recently_viewed_products}
+    return render(request, 'store/productinf.html', contex)
