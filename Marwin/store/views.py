@@ -94,6 +94,7 @@ def register_user(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
+            print(form)
             user = form.save(commit=False)
             user.save()
             login(request, user)

@@ -52,10 +52,10 @@
             <div class="box-element">
                 <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
                 <hr>
+                {% for item in items %}
                 <h3>Order Summary</h3>
                 <h5>Items: {{order.get_cart_items}}</h5>
                 <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
-                {% for item in items %}
                 <hr>
                 <div class="cart-row">
                     <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
